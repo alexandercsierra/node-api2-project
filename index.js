@@ -1,22 +1,14 @@
 const express = require("express");
-
-const apiRouter = require("./api/api-router.js"); // << added
-
+const apiRouter = require("./api/api-router");
 const server = express();
 
-server.use(express.json()); // needed to parse JSON from the body
+server.use(express.json());
 
-// for URLs beginning with /api
 server.use("/api", apiRouter);
 
 server.get("/", (req, res) => {
-  res.send(`
-    <h2>Lambda Hubs API</h>
-    <p>Welcome to the Lambda Hubs API</p>
-  `);
+  res.send("Welcome to my API");
 });
 
-const port = 5000;
-server.listen(port, () => {
-  console.log(`\n*** Server Running on http://localhost:${port} ***\n`);
-});
+const port = 5001;
+server.listen(port, ()=>{console.log(`\n***Server listening on port ${port}***\n`)});
