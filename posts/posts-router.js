@@ -66,5 +66,65 @@ router.post('/:id/comments', (req, res)=>{
 
 })
 
+router.put('/:id', (req, res)=>{
+    const {id} = req.params;
+    const newPost = req.body;
+    //find a post by that id
+    // Posts.findById(id)
+    //     .then(found=>{
+    //         //post with that id found
+    //         if(found.length>0){
+    //             //does the req contain title and contents?
+    //             if(newPost.title && newPost.contents){
+    //                 //ok then update it
+    //                 Posts.update(id, newPost)
+    //                     .then(success=>{
+    //                         res.status(200).json(newPost)
+    //                     })
+    //                     //update failed for some reason
+    //                     .catch(failed=>res.status(500).json({errorMessage: 'The post information could not be modified.'}))
+    //             //req missing title or contents
+    //             } else{
+    //                 res.status(400).json({errorMessage:'Please provide title and contents for the post.'})
+    //             }
+    //         //there was no post found at that id
+    //         } else {
+    //             res.status(404).json({errorMessage: 'The post with the specified ID does not exist.'})
+    //         }
+    //     //server error
+    //     })
+    //     .catch(notFound=>res.status(500).json({errorMessage: 'The post information could not be modified.'}))
+
+    Posts.update(id, newPost)
+        .then(post=>{
+            if (post){
+                if(newPost.title && newPost.contents){
+                    res.status(200).json(newPost)
+                } else {
+                    res.status(400).json({errorMessage:'Please provide title and contents for the post.'})
+                }
+            } else {
+                res.status(404).json({errorMessage: 'The post with the specified ID does not exist.'})
+            }
+        })
+        //update failed for some reason
+        .catch(failed=>res.status(500).json({errorMessage: 'The post information could not be modified.'}))
+
+
+    
+})
+
+router.delete('/:id', (req, res)=>{
+    const {id} = req.params;
+    Posts.remove(id)
+        .then(post => {
+            post ? res.status(200).json(post) : res.status(404).json({errorMessage: 'user not found'})
+        })
+        .catch(post=>{
+            console.log(error);
+            res.status(500).json({erorrMessage:'The post could not be removed'})
+        })
+  
+})
 
 module.exports = router;
