@@ -28,7 +28,16 @@ router.get('/:id/comments', (req, res)=>{
         .catch(err=>res.status(500).json({errorMessage: 'The comments information could not be retrieved.'}))
 })
 
-
+router.post('/', (req, res)=>{
+    const newPost = req.body;
+    if(newPost.title && newPost.contents){
+        Posts.insert(newPost)
+            .then(success=>res.status(201).json(newPost))
+            .catch(failure=>res.status(500).json({errorMessage:'There was an error while saving the post to the database'}))       
+    } else {
+        res.status(400).json({errorMessage:'Please provide title and contents for the post'})
+    }
+})
 
 router.post('/:id/comments', (req, res)=>{
     const comment = req.body;
@@ -52,7 +61,8 @@ router.post('/:id/comments', (req, res)=>{
         })
         .catch(err=>res.status(500).json({errorMessage: 'There was an error while saving the comment to the database'}))
     
-    
+
+
 
 })
 
