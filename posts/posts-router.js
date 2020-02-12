@@ -106,6 +106,7 @@ router.put('/:id', (req, res)=>{
             } else {
                 res.status(404).json({errorMessage: 'The post with the specified ID does not exist.'})
             }
+
         })
         //update failed for some reason
         .catch(failed=>res.status(500).json({errorMessage: 'The post information could not be modified.'}))
